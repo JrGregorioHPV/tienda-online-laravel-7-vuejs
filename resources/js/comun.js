@@ -1,5 +1,5 @@
 
-require('./bootstrap');
+require('./tienda/bootstrap');
 
 window.Vue = require('vue');
 

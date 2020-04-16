@@ -52,7 +52,7 @@
                     <tr>
                       <td>{{ $producto->id }}</td>
                       <td>{{ $producto->Nombre }}</td>
-                      <td>{{ $producto->Cantidad }}</td>
+                      <td>{{ $producto->Slug }}</td>
                       <td>{{ $producto->Precio_Anterior }}</td>
                       <td>{{ $producto->created_at }}</td>
                       <td>{{ $producto->updated_at }}</td>

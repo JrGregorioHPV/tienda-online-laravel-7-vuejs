@@ -31,7 +31,7 @@
                 <div class="form-group">
 
                   <label>Visitas</label>
-                  <input  class="form-control" type="number" id="visitas" name="visitas">
+                  <input  class="form-control" type="number" id="Visitas" name="Visitas">
 
                  
                 </div>
@@ -43,7 +43,7 @@
                 <div class="form-group">
 
                   <label>Ventas</label>
-                  <input  class="form-control" type="number" id="ventas" name="ventas" >
+                  <input  class="form-control" type="number" id="Ventas" name="Ventas" >
                 </div>
                 <!-- /.form-group -->
     
@@ -75,12 +75,21 @@
                 <div class="form-group">
 
                   <label>Nombre</label>
-                  <input class="form-control" type="text" id="nombre" name="nombre">
+                  <input class="form-control"
+                  v-model="nombre"
+                        @blur = "getProducto"
+                        @focus = "div_aparecer = false"
+                   type="text" id="Nombre" name="Nombre">
 
                   <label>Slug</label>
-                  <input class="form-control" type="text" id="slug" name="slug" >
+                  <input class="form-control" 
+                  readonly v-model="generarSlug"
+                  type="text" id="Slug" name="Slug" >
 
-                 
+                  <div v-if="div_aparecer" v-bind:class="div_claseSlug">
+                        @{{ div_mensajeSlug }}
+                    </div>
+                    <br v-if="div_aparecer">
                 </div>
                 <!-- /.form-group -->
                 
@@ -93,7 +102,7 @@
 
 
                   <label>Categoria</label>
-                  <select name="category_id" class="form-control select2" style="width: 100%;">
+                  <select name="CategoriaId" class="form-control select2" style="width: 100%;">
                     @foreach($categorias as $categoria)
                     
                      @if ($loop->first)
@@ -106,7 +115,7 @@
 
                   </select>
                   <label>Cantidad</label>
-                  <input class="form-control" type="number" id="cantidad" name="cantidad" >
+                  <input class="form-control" type="number" id="Cantidad" name="Cantidad" >
                 </div>
                 <!-- /.form-group -->
     
@@ -150,7 +159,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                   </div>
-                  <input class="form-control" type="number" id="precioanterior" name="precioanterior" min="0" value="0" step=".01">                 
+                  <input class="form-control" type="number" id="PrecioAnterior" name="PrecioAnterior" min="0" value="0" step=".01">                 
                 </div>
                  
                 </div>
@@ -169,7 +178,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                   </div>
-                  <input class="form-control" type="number" id="precioactual" name="precioactual" min="0" value="0" step=".01">                 
+                  <input class="form-control" type="number" id="PrecioActual" name="PrecioActual" min="0" value="0" step=".01">                 
                 </div>
 
                 <br>
@@ -188,7 +197,8 @@
 
                   <label>Porcentaje de descuento</label>
                    <div class="input-group">                  
-                  <input class="form-control" type="number" id="porcentajededescuento" name="porcentajededescuento" step="any" min="0" min="100" value="0" >    <div class="input-group-prepend">
+                  <input class="form-control" type="number" id="PorcentajedeDescuento" name="PorcentajedeDescuento" step="any" min="0" min="100" value="0" >    
+                  <div class="input-group-prepend">
                     <span class="input-group-text">%</span>
                   </div>  
 
@@ -236,7 +246,7 @@
                 <div class="form-group">
                   <label>Descripción corta:</label>
 
-                  <textarea class="form-control" name="descripcion_corta" id="descripcion_corta" rows="3"></textarea>
+                  <textarea class="form-control" name="Descripcion_Corta" id="Descripcion_Corta" rows="3"></textarea>
                 
                 </div>
                 <!-- /.form group -->
@@ -244,7 +254,7 @@
                <div class="form-group">
                   <label>Descripción larga:</label>
 
-                  <textarea class="form-control" name="descripcion_larga" id="descripcion_larga" rows="5"></textarea>
+                  <textarea class="form-control" name="Descripcion_Larga" id="Descripcion_Larga" rows="5"></textarea>
                 
                 </div>                
 
@@ -270,7 +280,7 @@
                 <div class="form-group">
                   <label>Especificaciones:</label>
 
-                  <textarea class="form-control" name="especificaciones" id="especificaciones" rows="3"></textarea>
+                  <textarea class="form-control" name="Especificaciones" id="Especificaciones" rows="3"></textarea>
                 
                 </div>
                 <!-- /.form group -->
@@ -278,7 +288,7 @@
                <div class="form-group">
                   <label>Datos de interes:</label>
 
-                  <textarea class="form-control" name="datos_de_interes" id="datos_de_interes" rows="5"></textarea>
+                  <textarea class="form-control" name="Datos_de_Interes" id="Datos_de_Interes" rows="5"></textarea>
                 
                 </div>                
 
@@ -339,7 +349,7 @@
                 <div class="form-group">
 
                   <label>Estado</label>
-                  <input  class="form-control" type="text" id="estado" name="estado" value="Nuevo">
+                  <input  class="form-control" type="text" id="Estado" name="Estado" value="Nuevo">
 
                  
                 </div>
@@ -351,16 +361,16 @@
                     <!-- checkbox -->
                     <div class="form-group clearfix">
                       <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="activo" name="activo">
-                        <label class="custom-control-label" for="activo">Activo</label>
+                        <input type="checkbox" class="custom-control-input" id="Activo" name="Activo">
+                        <label class="custom-control-label" for="Activo">Activo</label>
                      </div>
 
                     </div>
 
                     <div class="form-group">
                     <div class="custom-control custom-switch">
-                      <input type="checkbox"  class="custom-control-input" id="sliderprincipal" name="sliderprincipal">
-                      <label class="custom-control-label" for="sliderprincipal">Aparece en el Slider principal</label>
+                      <input type="checkbox"  class="custom-control-input" id="SliderPrincipal" name="SliderPrincipal">
+                      <label class="custom-control-label" for="SliderPrincipal">Aparece en el Slider principal</label>
                     </div>
                   </div>
 
@@ -370,16 +380,13 @@
 
        </div>
             <!-- /.row -->
-
-
-
-
        <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
 
                    <a class="btn btn-danger" href="{{ route('cancelar','admin.producto.index') }}">Cancelar</a>
-                   <input                  
+                   <input
+                   :disabled = "deshabilitar_btn == 1"                
                   type="submit" value="Guardar" class="btn btn-primary">
                  
                 </div>
