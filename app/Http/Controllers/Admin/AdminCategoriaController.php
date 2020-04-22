@@ -21,7 +21,7 @@ class AdminCategoriaController extends Controller
     {
         $_nombre = $request->get('nombre');
         $categorias = Categoria::where('Nombre', 'like', "%$_nombre%")
-                    ->orderBy('Nombre', 'ASC')->paginate(3);
+                    ->orderBy('Nombre', 'ASC')->paginate(5);
         return view('admin.category.index', compact('categorias'));
     }
 
@@ -44,7 +44,7 @@ class AdminCategoriaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'Nombre' => 'required|max:2|unique:categorias,Nombre',
+            'Nombre' => 'required|max:50|unique:categorias,Nombre',
             'Slug' => 'required|max:50|unique:categorias,Slug'
         ]);
         
@@ -93,7 +93,7 @@ class AdminCategoriaController extends Controller
         $cat = Categoria::findOrFail($id);
 
         $request->validate([
-            'Nombre' => 'required|max:2|unique:categorias,Nombre,'.$cat->id,
+            'Nombre' => 'required|max:50|unique:categorias,Nombre,'.$cat->id,
             'Slug' => 'required|max:50|unique:categorias,Slug,'.$cat->id,
         ]);
 

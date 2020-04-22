@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="http://tienda-online.com:8080/adminlte/plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  @yield('estilos')
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="http://tienda-online.com:8080/adminlte/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
@@ -798,6 +799,8 @@
 <script src="http://tienda-online.com:8080/adminlte/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="http://tienda-online.com:8080/adminlte/dist/js/demo.js"></script>
+<script src="http://tienda-online.com:8080/js/sweetalert2@9.js"></script>
 <script src="{{ asset('js/app_admin.js') }}" defer></script>
+@yield('script')
 </body>
 </html>

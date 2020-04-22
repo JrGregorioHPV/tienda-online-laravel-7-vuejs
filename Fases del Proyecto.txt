@@ -1,0 +1,73 @@
+Directorio del Proyecto
+----------------------------------------
+cd C:/xampp/htdocs/tiendaonline.com
+
+Instalar Laravel 6.x
+----------------------------------------
+composer create-project --prefer-dist laravel/laravel Sistema
+cd Sistema
+
+Instalar Sistema de Autenticación
+----------------------------------------
+composer require laravel/ui
+php artisan ui vue --auth
+npm install && npm run dev
+
+Migración Auth
+----------------------------------------
+php artisan migrate
+
+Creacion del Modelo: Categoría
+----------------------------------------
+php artisan make:model Categoria -m
+php artisan migrate
+
+php artisan tinker
+$cat = new Categoria();
+$cat->Nombre='Hombres';
+$cat->Descripcion='Ropa para Hombres';
+$cat->Slug='hombres';
+$cat->save();
+$cat = Categoria::first();
+
+$cat = new Categoria();
+$cat->Nombre='Mujeres';
+$cat->Descripcion='Ropa para Mujeres';
+$cat->Slug='mujeres';
+$cat->save();
+$cat = Categoria::first();
+exit();
+
+Creación del Modelo: Producto
+----------------------------------------
+php artisan make:model Producto -m
+php artisan migrate
+
+Creación del Controlador: Categoria API
+----------------------------------------
+php artisan make:controller API/CategoriaController --api
+
+Compilar / Laravel MIX
+----------------------------------------
+npm run dev
+
+Creación del Controlador: Categoria
+----------------------------------------
+php artisan make:controller Admin/AdminCategoriaController --resource
+
+Compilar / Laravel MIX
+----------------------------------------
+npm run watch
+
+Creación del Controlador: Producto
+----------------------------------------
+php artisan make:controller Admin/AdminProductoController --resource
+
+Creación del Controlador: Producto API
+----------------------------------------
+php artisan make:controller API/ProductoController
+
+Creación del Modelo: Imágen
+----------------------------------------
+php artisan make:model Imagen -m
+php artisan migrate

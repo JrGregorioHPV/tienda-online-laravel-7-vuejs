@@ -1,0 +1,20 @@
+GITHUB
+===========================
+cd C:/xampp/htdocs/tiendaonline.com/Sistema
+ls
+git init: Inicializar GIT
+git status
+git add .
+git status
+git add README.md
+git commit -m "Descripción breve de los cambios"
+git log: Cambios al proyecto
+git remote add origin https://github.com/JrGregorioHPV/tienda-online-laravel-7-vuejs.git
+git push -u origin master
+git remote -v: Muestra los repositorios remotos
+
+JrGregorioHPV
+info@gregoriopineda.com
+JrGH27051988PV
+--------------------------------------------------
+https://github.com/JrGregorioHPV/tienda-online-laravel-7-vuejs.git

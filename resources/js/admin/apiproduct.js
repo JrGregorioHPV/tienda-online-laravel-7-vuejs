@@ -6,7 +6,13 @@ const apiproduct = new Vue({
                 div_mensajeSlug: 'Slug existe',
                 div_claseSlug: 'badge badge-danger',
                 div_aparecer: false,
-                deshabilitar_btn: 1
+                deshabilitar_btn: 1,
+                // Variables de Precio
+                precioAnterior: 0,
+                precioActual: 0,
+                descuento: 0,
+                porcentajedeDescuento: 0,
+                descuento_mensaje: '0'
             },
             computed: {
                 generarSlug: function(){
@@ -21,7 +27,55 @@ const apiproduct = new Vue({
                     }).toLowerCase();
 
                     return this.slug;
-                }
+                },
+                // Funcion de Precio
+                generarDescuento: function(){
+
+                    if (this.porcentajedeDescuento > 100) {
+                      Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'No puedes poner un valor mayor a 100'
+                      });
+                      this.porcentajedeDescuento = 100;
+                      this.descuento = (this.precioAnterior * this.porcentajedeDescuento) / 100;
+                      this.precioActual = this.precioAnterior - this.descuento;
+                      this.descuento_mensaje = 'Este producto tiene el 100% de descuento, por ende es gratis';
+                      return this.descuento_mensaje;
+                    } else {
+                      if (this.porcentajedeDescuento < 0) {
+                        Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'No puedes poner un valor menor a 0'
+                      });
+                        this.porcentajedeDescuento = 0;
+                        this.descuento = (this.precioAnterior * this.porcentajedeDescuento) / 100;
+                        this.precioActual = this.precioAnterior - this.descuento;
+                        this.descuento_mensaje = '';
+                        return this.descuento_mensaje;
+                      }
+                    }
+  
+                      if (this.porcentajedeDescuento > 0) {
+                          this.descuento = (this.precioAnterior * this.porcentajedeDescuento) / 100;
+                          this.precioActual = this.precioAnterior - this.descuento;
+                          
+                          if (this.porcentajedeDescuento == 100) {
+                              this.descuento_mensaje = 'Este producto tiene el %100 de descuento, por ende es gratis';
+                          } else {
+                              this.descuento_mensaje = 'Hay un descuento de $US' + this.descuento;this.descuento_mensaje = 'Hay un descuento de $US' + this.descuento;
+                          }
+                          return this.descuento_mensaje;                  
+                      } else {
+                          this.descuento = '';
+                          this.precioActual = this.precioAnterior;
+                          
+                              this.descuento_mensaje = '';
+                                                  
+                          return this.descuento_mensaje; 
+                          }
+                  }
             },
             methods: {
                 getProducto(){
@@ -48,9 +102,13 @@ const apiproduct = new Vue({
                 }
             },
             mounted(){
-                if(document.getElementById('editar')){
-                    this.nombre = document.getElementById('nombreTemp').innerHTML;
+                if(dataInfo.editar == 'Si'){
+                    this.nombre = dataInfo.datos.nombre;
+                    this.precioAnterior = dataInfo.datos.precioanterior;
+                    this.porcentajedeDescuento = dataInfo.datos.porcentajedescuento;
                     this.deshabilitar_btn = 0;
                 }
+
+                console.log('Nombre: '+this.nombre);
             }
 });

@@ -17,8 +17,9 @@ class AdminProductoController extends Controller
     public function index(Request $request)
     {
         $_nombre = $request->get('nombre');
-        $productos = Producto::where('Nombre', 'like', "%$_nombre%")
-                    ->orderBy('Nombre', 'ASC')->paginate(3);
+        $productos = Producto::with('images', 'categoria')
+                    ->where('Nombre', 'like', "%$_nombre%")
+                    ->orderBy('Nombre', 'ASC')->paginate(4);
         return view('admin.product.index', compact('productos'));
     }
 
@@ -41,6 +42,27 @@ class AdminProductoController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'Nombre' => 'required|unique:productos,Nombre',
+            'Slug' => 'required|unique:productos,Slug',
+            'Imagenes.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        $URLImagenes = [];
+        /* Si tiene en el campo imagen un archivo */
+        if($request->hasFile('Imagenes')){
+            $imagenes = $request->file('Imagenes');
+        }
+
+        // Recorrer imagenes
+        foreach($imagenes as $imagen){
+            $nombre = time().'_'.$imagen->getClientOriginalName(); /* obtener nombre de la imagen */
+            $ruta = public_path().'/imagenes'; /* Guarda la imagen  ruta completa */
+            $imagen->move($ruta, $nombre);
+            $URLImagenes[]['URL'] = '/imagenes/'.$nombre;
+        }
+        //return $URLImagenes;
+        
         $prod = new Producto;
         /* Campos SQL               = Nombre de Campos HTML */
         $prod->Nombre               = $request->Nombre;
@@ -69,7 +91,12 @@ class AdminProductoController extends Controller
         }
 
         $prod->save();
-        return $prod;
+
+        $prod->images()->createMany($URLImagenes);
+        //return $prod->images;
+
+        return redirect()->route('admin.producto.index')
+                ->with('datos', 'Registro creado correctamente!');
     }
 
     /**
@@ -89,9 +116,13 @@ class AdminProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        //
+        $producto = Producto::with('images', 'categoria')
+            ->where('Slug', $slug)->firstOrFail();
+
+        $categorias = Categoria::orderBy('Nombre', 'ASC')->get();
+        return view('admin.product.editar', compact('producto', 'categorias'));
     }
 
     /**

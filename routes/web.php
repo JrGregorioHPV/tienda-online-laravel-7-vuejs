@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Producto;
 use App\Categoria;
+use App\Imagen;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,24 @@ use App\Categoria;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// 0 saber si tiene una imagen o no
+Route::get('/prueba', function () {
+    
+    $producto = App\Producto::find(1);
+    $producto->images()->saveMany([
+        new App\Imagen(['URL' => 'imagenes/avatar.png']),
+        new App\Imagen(['URL' => 'imagenes/avatar2.png']),
+        new App\Imagen(['URL' => 'imagenes/avatar3.png'])
+    ]);
+
+    return $producto->images;
+});
+
+// Mostrar resultados
+Route::get('/resultados', function () {
+    $image = App\Imagen::orderBy('id', 'Desc')->get();
+    return $image;
+});
 
 Route::get('/', function () {
 

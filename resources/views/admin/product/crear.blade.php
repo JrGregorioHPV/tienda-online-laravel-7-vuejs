@@ -7,7 +7,33 @@
     <li class="breadcrumb-item active">@yield('titulo')</li>
 @endsection
 
+@section('estilos')
+<!-- Select2 -->
+<link rel="stylesheet" href="/adminlte/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+@endsection
+
+@section('script')
+<!-- Select2 -->
+<script src="/adminlte/plugins/select2/js/select2.full.min.js"></script>
+<!-- Ckeditor Js -->
+<script src="/adminlte/ckeditor/ckeditor.js"></script>
+
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $('#CategoriaId').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    });
+  });
+</script>
+@endsection
+
 @section('contenido')
+
 <div id="apiproduct">
 <form action="{{ route('admin.producto.store') }}" method="POST" enctype="multipart/form-data" >
 @csrf
@@ -102,7 +128,7 @@
 
 
                   <label>Categoria</label>
-                  <select name="CategoriaId" class="form-control select2" style="width: 100%;">
+                  <select name="CategoriaId" id="CategoriaId" class="form-control" style="width: 100%;">
                     @foreach($categorias as $categoria)
                     
                      @if ($loop->first)
@@ -136,7 +162,7 @@
 
 
 
-         <div class="card card-success">
+        <div class="card card-success">
           <div class="card-header">
             <h3 class="card-title">Sección de Precios</h3>
 
@@ -159,7 +185,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                   </div>
-                  <input class="form-control" type="number" id="PrecioAnterior" name="PrecioAnterior" min="0" value="0" step=".01">                 
+                  <input v-model="precioAnterior" class="form-control" type="number" id="PrecioAnterior" name="PrecioAnterior" min="0" value="0" step=".01">                 
                 </div>
                  
                 </div>
@@ -178,11 +204,13 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text">$</span>
                   </div>
-                  <input class="form-control" type="number" id="PrecioActual" name="PrecioActual" min="0" value="0" step=".01">                 
+                  <input v-model="precioActual" class="form-control" type="number" id="PrecioActual" name="PrecioActual" min="0" value="0" step=".01">                 
                 </div>
 
                 <br>
-                <span id="descuento"></span>
+                <span id="descuento">
+                Descuento: @{{ generarDescuento }}
+                </span>
                 </div>
                 <!-- /.form-group -->
     
@@ -197,7 +225,7 @@
 
                   <label>Porcentaje de descuento</label>
                    <div class="input-group">                  
-                  <input class="form-control" type="number" id="PorcentajedeDescuento" name="PorcentajedeDescuento" step="any" min="0" min="100" value="0" >    
+                  <input v-model="porcentajedeDescuento" class="form-control" type="number" id="PorcentajedeDescuento" name="PorcentajedeDescuento" step="any" min="0" max="100" value="0" >    
                   <div class="input-group-prepend">
                     <span class="input-group-text">%</span>
                   </div>  
@@ -206,7 +234,10 @@
 
                 <br>
                 <div class="progress">
-                    <div id="barraprogreso" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                    <div id="barraprogreso" class="progress-bar" role="progressbar" 
+                     
+                    v-bind:style="{width: porcentajedeDescuento + '%'}"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">@{{ porcentajedeDescuento }}%</div>
                 </div>
                 </div>
                 <!-- /.form-group -->
@@ -217,22 +248,13 @@
 
             </div>
             <!-- /.row -->
-
-
-          </div>
+            </div>
           <!-- /.card-body -->
           <div class="card-footer">
             
           </div>
         </div>
         <!-- /.card -->
-
-
-
-
-
-
-
 
    <div class="row">
           <div class="col-md-6">
@@ -246,7 +268,7 @@
                 <div class="form-group">
                   <label>Descripción corta:</label>
 
-                  <textarea class="form-control" name="Descripcion_Corta" id="Descripcion_Corta" rows="3"></textarea>
+                  <textarea class="form-control ckeditor" name="Descripcion_Corta" id="Descripcion_Corta" rows="3"></textarea>
                 
                 </div>
                 <!-- /.form group -->
@@ -254,7 +276,7 @@
                <div class="form-group">
                   <label>Descripción larga:</label>
 
-                  <textarea class="form-control" name="Descripcion_Larga" id="Descripcion_Larga" rows="5"></textarea>
+                  <textarea class="form-control ckeditor" name="Descripcion_Larga" id="Descripcion_Larga" rows="5"></textarea>
                 
                 </div>                
 
@@ -280,7 +302,7 @@
                 <div class="form-group">
                   <label>Especificaciones:</label>
 
-                  <textarea class="form-control" name="Especificaciones" id="Especificaciones" rows="3"></textarea>
+                  <textarea class="form-control ckeditor" name="Especificaciones" id="Especificaciones" rows="3"></textarea>
                 
                 </div>
                 <!-- /.form group -->
@@ -288,7 +310,7 @@
                <div class="form-group">
                   <label>Datos de interes:</label>
 
-                  <textarea class="form-control" name="Datos_de_Interes" id="Datos_de_Interes" rows="5"></textarea>
+                  <textarea class="form-control ckeditor" name="Datos_de_Interes" id="Datos_de_Interes" rows="5"></textarea>
                 
                 </div>                
 
@@ -310,7 +332,7 @@
 
          <div class="card card-warning">
           <div class="card-header">
-            <h3 class="card-title">Imagenes</h3>
+            <h3 class="card-title">Imágenes</h3>
 
            
           </div>
@@ -319,13 +341,20 @@
 
             <div class="form-group">
                 
-               <label for="archivosimagenes">Subir varias imagenes</label> 
+               <label for="Imagenes">Añadir imágenes</label> 
                               
-               <input type="file" class="form-control-file" id="archivosimagenes[]" multiple 
+               <input type="file" class="form-control-file" name="Imagenes[]" id="Imagenes[]" multiple 
                accept="image/*" >
             </div>
-
-
+            <div class="description">
+            Un número limitado de archivos pueden ser cargados en este campo.
+            <br>
+            Limite de 2048 MB por imagen
+            <br>
+            Tipos permitidos: jpeg, png, jpg, dif, svg.
+            <br>
+            </div>
+            
           </div>
 
 

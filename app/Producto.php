@@ -10,4 +10,10 @@ class Producto extends Model
     {
     	return $this->belongsTo(Categoria::class, 'Categoria_Id');
     }
+
+    public function images()
+    {
+        /* Un producto va a tener muchas imágenes */
+    	return $this->morphMany('App\Imagen', 'Imageable');
+    }
 }
